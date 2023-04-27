@@ -72,8 +72,28 @@ calidad_aire <- read_delim("Datasets/rvvcca.csv",
 - Fecha creación: Es la fecha en que se creó el registro en la base de datos.
 - Fecha baja: Es la fecha en que se eliminó el registro de la base de datos.
 
+
+De todas las variables disponibles hemos elegido para considerar la calidad del aire las que se consideran por el gobierno español en el indice de calidad del aire (ICA), y las necesarias para el estudio. Las variables elegidas son:
+
+- Id: Identificador único de cada registro.
+- Fecha: Fecha y hora de la medición.
+- Dia de la semana: Día de la semana correspondiente a la fecha de medición.
+- Dia del mes: Día del mes correspondiente a la fecha de medición.
+- Estacion: Nombre de la estación de medición de la calidad del aire.
+
+- PM2.5: Concentración de partículas PM2.5 en microgramos por metro cúbico (µg/m³).
+- PM10: Concentración de partículas PM10 en microgramos por metro cúbico (µg/m³).
+- NO2: Concentración de dióxido de nitrógeno (NO2) en partes por billón (ppb).
+- O3: Concentración de ozono (O3) en partes por billón (ppb).
+- SO2: Concentración de dióxido de azufre (SO2) en partes por billón (ppb).
+
+Las primeras 5 variables hacen referencia a la estación donde se recogieron los datos y las otras 5 son las variables que se utilizaran para el estudio de la calidad del aire.
+
 ```{r}
-calidad_aire_filtrado <- calidad_aire %>% select()
+calidad_aire_filtrado <- calidad_aire %>% select(Id, Fecha, `Dia de la semana`, `Dia del mes`,Estacion, PM2.5, PM10, NO2, O3, So2)
+str(calidad_aire_filtrado)
+summary(calidad_aire_filtrado)
+
 ```
 
 
