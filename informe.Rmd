@@ -1,0 +1,79 @@
+---
+title: "Miniproyecto-Vd"
+author: "Roberto Arnaiz Asesnio"
+date: '2023-04-27'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Especificamos las librerías necesarias en esta lista
+
+packages = c("MASS","knitr","tidyverse","robustbase","car","RMySQL","readr",
+             "tidyr")
+
+#use this function to check if each package is on the local machine
+#if a package is installed, it will be loaded
+#if any are not, the missing package(s) will be installed and loaded
+package.check <- lapply(packages, FUN = function(x) {
+  if (!require(x, character.only = TRUE)) {
+    install.packages(x, dependencies = TRUE,repos='http://cran.rediris.es')
+    library(x, character.only = TRUE)
+  }
+})
+
+#verify they are loaded
+#search()
+```
+
+```{r}
+#Cargamos el dataset de datos diarios de calidad del aire.
+calidad_aire <- read_delim("Datasets/rvvcca.csv", 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
+```
+# ANALISIS DE LOS DATOS
+## DESCRIPCIÓN DE LOS DATOS DISPONIBLES
+
+- Id: Identificador único de cada registro.
+- Fecha: Fecha y hora de la medición.
+- Dia de la semana: Día de la semana correspondiente a la fecha de medición.
+- Dia del mes: Día del mes correspondiente a la fecha de medición.
+- Estacion: Nombre de la estación de medición de la calidad del aire.
+- PM1: Concentración de partículas PM1 en microgramos por metro cúbico (µg/m³).
+- PM2.5: Concentración de partículas PM2.5 en microgramos por metro cúbico (µg/m³).
+- PM10: Concentración de partículas PM10 en microgramos por metro cúbico (µg/m³).
+- NO: Concentración de óxido nítrico (NO) en partes por billón (ppb).
+- NO2: Concentración de dióxido de nitrógeno (NO2) en partes por billón (ppb).
+- NOx: Concentración de óxidos de nitrógeno (NOx) en partes por billón (ppb).
+- O3: Concentración de ozono (O3) en partes por billón (ppb).
+- SO2: Concentración de dióxido de azufre (SO2) en partes por billón (ppb).
+- CO: Concentración de monóxido de carbono (CO) en partes por millón (ppm).
+- NH3: Concentración de amoníaco (NH3) en partes por billón (ppb).
+- C7H8: Concentración de tolueno (C7H8) en microgramos por metro cúbico (µg/m³).
+- C6H6: Concentración de benceno (C6H6) en microgramos por metro cúbico (µg/m³).
+- Ruido: Nivel de ruido ambiental en decibelios (dB).
+- C8H10: Concentración de etilbenceno (C8H10) en microgramos por metro cúbico (µg/m³).
+- Velocidad del viento: Velocidad del viento en metros por segundo (m/s).
+- Direccion del viento: Dirección del viento en grados (0-360).
+- Temperatura: Temperatura en grados Celsius (ºC).
+- Humedad relativa: Porcentaje de humedad relativa del aire (%).
+- Presion: Presión atmosférica en hectopascales (hPa).
+- Radiacion solar: Radiación solar en watts por metro cuadrado (W/m²).
+- Precipitacion: Cantidad de precipitación en milímetros (mm).
+- Velocidad maxima del viento: Velocidad máxima del viento en metros por segundo (m/s).
+- As (ng/m³): Concentración de arsénico (As) en nanogramos por metro cúbico (ng/m³).
+- Ni (ng/m³): Concentración de níquel (Ni) en nanogramos por metro cúbico (ng/m³).
+- Cd (ng/m³): Concentración de cadmio (Cd) en nanogramos por metro cúbico (ng/m³).
+- Pb (ng/m³): Es la concentración de plomo en el aire, medida en nanogramos por metro cúbico (ng/m³).
+- B(a)p (ng/m³): Es la concentración de benzo(a)pireno en el aire, medida en nanogramos por metro cúbico (ng/m³).
+- Fecha creación: Es la fecha en que se creó el registro en la base de datos.
+- Fecha baja: Es la fecha en que se eliminó el registro de la base de datos.
+
+```{r}
+calidad_aire_filtrado <- calidad_aire %>% select()
+```
+
+
