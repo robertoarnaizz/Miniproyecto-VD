@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Especificamos las librerías necesarias en esta lista
 
 packages = c("MASS","knitr","tidyverse","robustbase","car","RMySQL","readr",
-             "tidyr")
+             "tidyr", "dplyr")
 
 #use this function to check if each package is on the local machine
 #if a package is installed, it will be loaded
@@ -89,11 +89,32 @@ De todas las variables disponibles hemos elegido para considerar la calidad del 
 
 Las primeras 5 variables hacen referencia a la estación donde se recogieron los datos y las otras 5 son las variables que se utilizaran para el estudio de la calidad del aire.
 
+## PREPARACIÓN DE LOS DATOS
+
 ```{r}
-calidad_aire_filtrado <- calidad_aire %>% select(Id, Fecha, `Dia de la semana`, `Dia del mes`,Estacion, PM2.5, PM10, NO2, O3, So2)
+# Filtramos el dataset original para quedarnos con las variables de interes.
+calidad_aire_filtrado <- calidad_aire %>% select(Id, Fecha, `Dia de la semana`, `Dia del mes`,Estacion, PM2.5, PM10, NO2, O3, SO2)
+
+# Comprobamos la estructura para ver que los tipos de los datos son los que necesitaremos
 str(calidad_aire_filtrado)
 summary(calidad_aire_filtrado)
+```
+```{r}
+# Calculamos el ICA (indice de calidad del aire).
+calidad_aire_filtrado[is.na(calidad_aire_filtrado)] <- 0
+calidad_aire_filtrado <- calidad_aire_filtrado %>%
+  mutate(ICA = pmax(PM2.5, PM10, NO2, SO2, O3))
 
+calidad_aire_filtrado <- calidad_aire_filtrado %>% mutate(Calidad = case_when(
+    ICA >= 0 & ICA <= 50 ~ "buena",
+    ICA >= 51 & ICA <= 100 ~ "moderada",
+    ICA >= 101 & ICA <= 150 ~ "poco saludable para grupos sensibles",
+    ICA >= 151 & ICA <= 200 ~ "poco saludable",
+    ICA >= 201 & ICA <= 300 ~ "muy poco saludable",
+    ICA >= 301 & ICA <= 500 ~ "peligrosa para la salud"))
 ```
 
+Para calcular el índice de calidad del aire aplicamos la fórmula propuesta por la EPA, con la que se calcula el índice de cada contaminante, el cual depende de su concentración.
+
+De los índices calculados para cada contaminante seleccionamos el que presenta un valor más desfavorable. Ese valor es el que se considera como índice de calidad del aire para ese momento.
 
